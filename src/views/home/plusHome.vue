@@ -100,6 +100,14 @@
                                 srcset="">
                             <img v-if="skin == 5" src="../../assets/images/skin/golden/down.png" alt="" srcset="">
                         </li>
+                        <li class="swiper-slide" @click="toChat">
+                            <img v-if="skin == 3" src="../../assets/images/skin/green/chat_1.png" alt="" srcset="">
+                            <img v-if="skin == 0" src="../../assets/images/newHome/chat_1.png" alt="" srcset="">
+                            <img v-if="skin == 1" src="../../assets/images/skin/pink/chat_1.png" alt="" srcset="">
+                            <img v-if="skin == 2" src="../../assets/images/skin/blue/chat_1.png" alt="" srcset="">
+                            <img v-if="skin == 4" src="../../assets/images/skin/maingreen/chat_1.png" alt="" srcset="">
+                            <img v-if="skin == 5" src="../../assets/images/skin/golden/chat_1.png" alt="" srcset="">
+                        </li>
                     </ul>
                 </div>
                 <i class="menu-jt" :class="{ gray: menuIndex == 0 }" @click='toleft'
@@ -110,7 +118,7 @@
                     <img v-if="skin == 2" src="../../assets/images/newHome/jt_icon-4.png" alt="" srcset="">
                     <img v-if="skin == 5" src="../../assets/images/skin/golden/right_on.png" alt="" srcset="">
                 </i>
-                <i class="menu-jt" :class="{ gray: menuIndex == 2 }" @click='toright' style="right:0;">
+                <i class="menu-jt" :class="{ gray: menuIndex >3 }" @click='toright' style="right:0;">
                     <img v-if="skin == 4 || skin == 3" src="../../assets/images/newHome/jt_icon.png" alt="" srcset="">
                     <img v-if="skin == 0" src="../../assets/images/newHome/jt_icon-2.png" alt="" srcset="">
                     <img v-if="skin == 1" src="../../assets/images/newHome/jt_icon-3.png" alt="" srcset="">
@@ -784,7 +792,7 @@ export default {
     },
     props: ['getChildData'],
     methods: {
-        ...mapMutations(["SETBANNER_S", "SETUSERTOKEN", "SETNEWSHOW", "SETHOMENEWDATA", "SETVERSION", "SETDEFAULTLAN", "SETSEARCHLIST", "SETNOTICEDATA", "SETSJB"]),
+        ...mapMutations(["SETBANNER_S", "SETUSERTOKEN", "SETNEWSHOW", "SETHOMENEWDATA", "SETVERSION", "SETDEFAULTLAN", "SETSEARCHLIST", "SETNOTICEDATA", "SETSJB","SETCHAT"]),
         hideSjb() {
             this.$st.commit('SETSJB', false);
         },
@@ -1047,6 +1055,37 @@ export default {
             }
 
 
+        },
+        toChat(){
+            if(!this.codeToken) return this.$popup();
+        if(this.$store.state.userinfo.user_id<0){
+            this.$swBox({
+                title: this.$t('tsTitle'),
+                content: this.$t('swTip'),
+                leftBtn: this.$t('loginText'),
+                rightBtn:this.$t('registerText'),
+                clickL: () => {
+                    this.SETUSERTOKEN('')
+                    this.$router.push('/login');
+                },
+                clickR: () => {
+                    this.SETUSERTOKEN('')
+                    if(this.noticeType==1){
+                        this.$router.push('/register');
+                        
+                    }else{
+                        this.$router.push('/RegisterDl');
+                        
+                    }
+                }
+            });
+            return;
+        }
+     if(this.chatShow){
+        this.SETCHAT(false)
+     }else{
+        this.SETCHAT(true)
+     }
         },
         isPhoneAgent() {
             let u = navigator.userAgent, app = navigator.appVersion;
