@@ -22,7 +22,7 @@
         </router-link>
       </li>
       <li @click="getClick('体育')" :class="'padNone'+skin">
-        <router-link  to="/toGame/bbin_sport/sport/-1">
+        <router-link  to="/toGame/cmd_sport/sport/-1">
           <i v-if="skin==0" class="icon icon-ty icon-ty-active"></i>
           <i v-if="skin==1" class="icon ty-pink"></i>
           <i v-if="skin==2" class="icon ty-blue"></i>

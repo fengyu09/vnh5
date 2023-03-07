@@ -111,7 +111,7 @@
     <div class="float-bg" v-if="isshowHd" @click="isshowHd=false">
 
     </div>
-    <iframe v-if="isloadTy" v-show="showtyUrl&&tygameUrl!=''" :src="tygameUrl" id="myiframe" scrolling="no" frameborder="0"></iframe>
+    <iframe v-if="isloadTy" v-show="showtyUrl&&tygameUrl!=''" @load="rameLoad" :src="tygameUrl" id="myiframe" scrolling="no" frameborder="0"></iframe>
     
   </div>
 </template>
@@ -171,7 +171,7 @@ export default {
         chatSocket:'ws://54.255.11.229:18305/wss',
         showSjb:false,
         showWh:false,
-        isloadTy:true,
+        isloadTy:false,
         loadTyTimeout:null,
         // isBb:true
     };
@@ -291,6 +291,11 @@ export default {
         }, 30000);
       }
     },
+    isloadTy:function(i){
+      if(i){
+        this.$vux.loading.show();
+      }
+    }
   },
   mounted() {
   this.showWh=window.isshowwh
@@ -445,6 +450,9 @@ export default {
       this.getXsType();
      
 
+    },
+    rameLoad(){
+      this.$vux.loading.hide();
     },
    changeVersion(n){
       this.SETVERSION(n);
@@ -831,6 +839,20 @@ export default {
   height: 92%;
   position: absolute;
 //   top: 1.2rem;
+}
+.weui-toast{
+  background: none;
+}
+.weui-icon_toast.weui-loading{
+  animation:none;
+  width: 92px;
+  height: 92px;
+  margin: 0;
+  background: url('../public/logo2.png') no-repeat;
+  background-size: 100% 100%;
+}
+.weui-loading_toast .weui-toast__content{
+  display: none;
 }
   .key-box {
     position: fixed;
