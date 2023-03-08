@@ -179,10 +179,10 @@ const fillKey = (key) => {
   }
   return filledKey;
 };
-let key = CryptoJS.enc.Utf8.parse('216f22c3fd9c5596'); //对内测试
+// let key = CryptoJS.enc.Utf8.parse('216f22c3fd9c5596'); //对内测试
 // let key = CryptoJS.enc.Utf8.parse("840592fcfa63fc31"); //kk199.cc对外yn演示网站
 // let key = CryptoJS.enc.Utf8.parse("242252c8ae41468b"); //66w.vip英文版测试
-// let key = CryptoJS.enc.Utf8.parse("e7df4a1a61d61204"); //k188生产环境0
+let key = CryptoJS.enc.Utf8.parse("e7df4a1a61d61204"); //k188生产环境0
 // let key = CryptoJS.enc.Utf8.parse("af98cc17e5389df9"); //kiss588.com越南版恭喜发财生产环境
 // 加密
 Vue.prototype.encrypt = function(data, type) {
@@ -190,10 +190,10 @@ Vue.prototype.encrypt = function(data, type) {
   if (store.state.decipher_str && store.state.codeToken && !type) {
     key = CryptoJS.enc.Utf8.parse(this.$st.state.decipher_str);
   } else {
-    key = CryptoJS.enc.Utf8.parse('216f22c3fd9c5596'); //对内测试
+    // key = CryptoJS.enc.Utf8.parse('216f22c3fd9c5596'); //对内测试
     // key = CryptoJS.enc.Utf8.parse("840592fcfa63fc31"); //kk199.cc对外yn演示网站
     //  key = CryptoJS.enc.Utf8.parse("242252c8ae41468b"); //66w.vip英文版测试
-    // key = CryptoJS.enc.Utf8.parse("e7df4a1a61d61204"); //k188生产环境
+    key = CryptoJS.enc.Utf8.parse("e7df4a1a61d61204"); //k188生产环境
     // key = CryptoJS.enc.Utf8.parse("af98cc17e5389df9"); //kiss588.com越南版恭喜发财生产环境
   }
   if (typeof data == "object") {
@@ -213,10 +213,10 @@ Vue.prototype.decrypt = function(data, type) {
   if (store.state.decipher_str && store.state.userinfo.user_id && !type) {
     key = CryptoJS.enc.Utf8.parse(store.state.decipher_str);
   } else {
-    key = CryptoJS.enc.Utf8.parse('216f22c3fd9c5596'); //对内测试
+    // key = CryptoJS.enc.Utf8.parse('216f22c3fd9c5596'); //对内测试
     // key = CryptoJS.enc.Utf8.parse("840592fcfa63fc31"); //kk199.cc对外yn演示网站
     // key = CryptoJS.enc.Utf8.parse("242252c8ae41468b"); //66w.vip英文版测试
-    // key = CryptoJS.enc.Utf8.parse("e7df4a1a61d61204"); //k188生产环境
+    key = CryptoJS.enc.Utf8.parse("e7df4a1a61d61204"); //k188生产环境
     // key = CryptoJS.enc.Utf8.parse("af98cc17e5389df9"); //kiss588.com越南版恭喜发财生产环境
   }
   var bytes = CryptoJS.AES.decrypt(data, key, ECBOptions);

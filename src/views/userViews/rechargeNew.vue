@@ -7,7 +7,7 @@
       <myScroll :bottom="1.4" :bgColor="skin==5?'161C23':'f5f7fa'" ref="listScroll">
         <div v-show="czTypeArr.length" :class="skin==5?'goldenBg':''">
           <div class="recharge-content" >
-            <h5>{{$t('recharge.text[1]')}}</h5>
+            <h5>{{$t('recharge.text[1]')}} <span style="color:red;margin-left: 20%;">(1VNDK = 1000VND)</span></h5>
             <ul class="type-list">
               <li class="type-item" :class="currType==key?'active':''" @click="currType=key" v-for="(item,key) in rechargeType" :key="key" v-if="key!='undefined'">                                
                 <div>
@@ -27,7 +27,7 @@
             </ul>
           </div> 
           <div class="recharge-content recharge-qd-content" v-if="currType!=2">
-            <h5>{{$t('recharge.text[2]')}}</h5>
+            <h5>{{$t('recharge.text[2]')}} </h5>
             <ul class="qd-list">
               <li v-for="item,index in rechargeType[currType]" :key="index" :class="currqd==item.id?'active':''" @click="changeQd(item)">
                 <span>{{item.channels_type}}</span>
