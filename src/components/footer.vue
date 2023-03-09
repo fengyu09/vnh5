@@ -1,7 +1,8 @@
 <template>
+  <div>
   <div class="main-footer" :style="skin==5?'background:#1A1A1A;box-shadow:none;border-radius:0':''">
     <ul>
-      <li @click="getClick('首页')"  :class="'padNone'+skin">
+      <li @click="getClick('首页',0)"  :class="'padNone'+skin" class="padNoneli">
         <router-link to="/" v-if="homeNewShow==-1">
           <i v-if="skin==0" class="icon icon-home icon-home-active"></i>
           <i v-if="skin==1" class="icon home-pink"></i>
@@ -21,7 +22,7 @@
           <p class="active-p-a">{{$t('home.footer[0]')}}</p>
         </router-link>
       </li>
-      <li @click="getClick('体育')" :class="'padNone'+skin">
+      <li @click="getClick('体育',1)" :class="'padNone'+skin" class="padNoneli">
         <router-link  to="/toGame/bbin_sport/sport/-1">
           <i v-if="skin==0" class="icon icon-ty icon-ty-active"></i>
           <i v-if="skin==1" class="icon ty-pink"></i>
@@ -32,20 +33,22 @@
           <p  class="active-p" >{{$t('home.footer[7]')}}</p>
         </router-link>
       </li>
-      <li @click="getClick('充值')" :class="'padNone'+skin" class="cz-ft">
-        <router-link to="/recharge" >
+      <li @click="getClick('充值',2)" :class="'padNone'+skin" class="cz-ft padNoneli">
+        <!-- <router-link to="/" > -->
+          <a :class="{'router-link-exact-active':isactive}">
           <i v-if="skin==0" class="icon icon-cz icon-cz-active"></i>
           <i v-if="skin==1" class="icon cz-pink"></i>
           <i v-if="skin==2" class="icon cz-blue"></i>
           <i v-if="skin==3" class="icon cz-green"></i>
           <i v-if="skin==4" class="icon cz-maingreen"></i>
           <i v-if="skin==5" class="icon cz-golden"></i>
-         
           <p  class="active-p">{{$t('home.footer[6]')}}</p>
-        </router-link>
+          </a>
+        
+        <!-- </router-link> -->
       </li>
       
-         <li @click="getClick('优惠')" :class="'padNone'+skin" >
+         <li @click="getClick('优惠',3)" :class="'padNone'+skin"  class="padNoneli">
         <router-link to="/Activities" >
           <i v-if="skin==0" class="icon icon-Discount icon-Discount-active"></i>
           <i v-if="skin==1" class="icon yh-pink"></i>
@@ -57,7 +60,7 @@
           <p  class="active-p">{{$t('home.footer[2]')}}</p>
         </router-link>
       </li>
-      <li @click="getClick('客服')" :class="'padNone'+skin">
+      <li @click="getClick('客服',4)" :class="'padNone'+skin"  class="padNoneli">
         <router-link to="/service" >
           <i v-if="skin==0" class="icon icon-guess icon-guess-active"></i>
           <i v-if="skin==1" class="icon kf-pink"></i>
@@ -83,7 +86,7 @@
         </a>
        
       </li> -->
-      <li @click="getClick('我的')" :class="'padNone'+skin">
+      <li @click="getClick('我的',5)" :class="'padNone'+skin" class="padNoneli">
         <router-link to="/member" >
           <i v-if="skin==0" class="icon icon-member icon-member-active"></i>
           <i v-if="skin==1" class="icon user-pink"></i>
@@ -97,10 +100,31 @@
       </li>
     </ul>
   </div>
+  <div class="trade-box" :class="'tradedkin'+skin" v-show="isactive">
+          <div @click="$router.push('recharge')" class="tradecz">
+           <img v-if="skin==0" src="../assets/images/newHome/Frame22.png" alt="" srcset="" >
+           <img v-if="skin==1" src="../assets/images/skin/pink/Frame22.png" alt="" srcset="" >
+           <img v-if="skin==2" src="../assets/images/skin/blue/Frame22.png" alt="" srcset="" >
+           <img v-if="skin==3" src="../assets/images/skin/green/Frame22.png" alt="" srcset="" >
+           <img v-if="skin==4" src="../assets/images/skin/maingreen/Frame22.png" alt="" srcset="" >
+           <img v-if="skin==5" src="../assets/images/skin/golden/Frame22.png" alt="" srcset="" >
+           <p>{{$t('recharge.text[0]')}}</p>
+          </div>
+          <div @click="$router.push('tx')" class="tradetx">
+            <img v-if="skin==0" src="../assets/images/newHome/Frame23.png" srcset="">
+            <img v-if="skin==1" src="../assets/images/skin/pink/Frame23.png" srcset="">
+            <img v-if="skin==2" src="../assets/images/skin/blue/Frame23.png" srcset="">
+            <img v-if="skin==3" src="../assets/images/skin/green/Frame23.png" srcset="">
+            <img v-if="skin==4" src="../assets/images/skin/maingreen/Frame23.png" srcset="">
+            <img v-if="skin==5" src="../assets/images/skin/golden/Frame23.png" srcset="">
+            <p>{{$t('newHome[13]')}}</p>
+          </div>
+      </div>
+  </div>
 </template>
 
 <script>
-import { getClickTimes } from '../assets/js/public'
+import { getClickTimes ,removeAllactive} from '../assets/js/public'
 import { mapState,mapMutations } from "vuex";
 export default {
   name: "foot",
@@ -108,7 +132,8 @@ export default {
     return {
       bet:'',
       gameBox:false,
-      chessArr:''
+      chessArr:'',
+      isactive:false
     };
   },
   computed: {
@@ -127,7 +152,18 @@ export default {
   },
   methods: {
      ...mapMutations(["SETNEWSHOW","SETCHAT","SETTYSHOW"]),
-    getClick(type){
+    getClick(type,index){
+      if(type=='充值'){
+      if(!this.isactive){
+        document.querySelectorAll('.padNoneli>a').forEach((res,id)=>{
+        res.classList.remove('router-link-exact-active')
+        })
+      }
+       this.isactive=!this.isactive;
+      }else{
+        this.isactive=false;
+        document.querySelectorAll('.padNoneli>a')[index].classList.add('router-link-exact-active')
+      }
       if(type=='首页'){
         this.SETTYSHOW(false)
         this.SETNEWSHOW(-1)
@@ -199,6 +235,160 @@ export default {
 .rem(@name,@px){
     @{name}:unit(@px/75,rem)
     }
+.trade-box{
+  position: fixed;
+    bottom: 1.5rem;
+    left: 2.55rem;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 3.2rem;
+    height: 52px;
+    border-radius: 5px;
+    // box-shadow: 0 1px 3px #fff;
+    font-size: 0.24rem;
+    --tw-text-opacity: 1;
+    // color: #CECECE;
+    // background: linear-gradient(325deg,#303030,#444241,#000000);
+    background-size: 400% 400%;
+    animation: gradient 2s ease infinite;
+    text-align: center;
+    font-weight: bold;
+    .tradecz{
+     img{
+      // margin-top: 0.05rem;
+     }
+    }
+    .tradetx{
+      img{
+        width: 0.5rem;
+      }
+    }
+    &.tradedkin0{
+      color: #929BBC;
+      background: #FFFFFF;
+      border: 0.5px solid #929BBC;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      &:after{
+      border-color: #929BBC transparent transparent;
+      border-style: solid;
+      border-width: 10px 10px 0;
+      bottom: -10px;
+      content: "";
+      height: 0;
+      left: 50%;
+      position: absolute;
+      transform: translate(-50%);
+      width: 0;
+    }
+    }
+    &.tradedkin1{
+      color: #DD8080;
+      background: #FFFFFF;
+      border: 0.5px solid #DD8080;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      &:after{
+      border-color: #DD8080 transparent transparent;
+      border-style: solid;
+      border-width: 10px 10px 0;
+      bottom: -10px;
+      content: "";
+      height: 0;
+      left: 50%;
+      position: absolute;
+      transform: translate(-50%);
+      width: 0;
+      }
+    }
+    &.tradedkin2{
+      color: #72A5C1;
+      background: #FFFFFF;
+      border: 0.5px solid #72A5C1;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      &:after{
+      border-color: #72A5C1 transparent transparent;
+      border-style: solid;
+      border-width: 10px 10px 0;
+      bottom: -10px;
+      content: "";
+      height: 0;
+      left: 50%;
+      position: absolute;
+      transform: translate(-50%);
+      width: 0;
+      }
+    }
+    &.tradedkin3{
+      color: #92BCB2;
+      background: #FFFFFF;
+      border: 0.5px solid #92BCB2;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      &:after{
+      border-color: #92BCB2 transparent transparent;
+      border-style: solid;
+      border-width: 10px 10px 0;
+      bottom: -10px;
+      content: "";
+      height: 0;
+      left: 50%;
+      position: absolute;
+      transform: translate(-50%);
+      width: 0;
+    }
+    }
+    &.tradedkin4{
+      background: #FFFFFF;
+      border: 0.5px solid #72C1A5;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      color: #72C1A5;
+      &:after{
+      border-color: #72C1A5 transparent transparent;
+      border-style: solid;
+      border-width: 10px 10px 0;
+      bottom: -10px;
+      content: "";
+      height: 0;
+      left: 50%;
+      position: absolute;
+      transform: translate(-50%);
+      width: 0;
+    }
+    }
+    &.tradedkin5{
+      color: #928151;
+      background: #1A1A1A;
+      border: 0.5px solid #928151;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      &:after{
+      border-color: #928151 transparent transparent;
+      border-style: solid;
+      border-width: 10px 10px 0;
+      bottom: -10px;
+      content: "";
+      height: 0;
+      left: 50%;
+      position: absolute;
+      transform: translate(-50%);
+      width: 0;
+    }
+    }
+    img{
+      width: 0.6rem;
+    }
+    &:after{
+      border-color: #464646 transparent transparent;
+    border-style: solid;
+    border-width: 10px 10px 0;
+    bottom: -10px;
+    content: "";
+    height: 0;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);
+    width: 0;
+    }
+}
 .main-footer {
   border-radius: .4rem .4rem 0 0 ;
   max-width: 750px;
@@ -212,6 +402,7 @@ export default {
   background: #fff;
   overflow-x: hidden;
   ul{
+   
     .cz-ft{
       i{
         background-position-y: 2px !important;
@@ -220,6 +411,7 @@ export default {
     }
      overflow: hidden;
      li{
+     
        position: relative;
         overflow: hidden;
         .msg-point{

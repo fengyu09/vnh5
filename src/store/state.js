@@ -701,7 +701,8 @@ try {
 } catch (e) {
 }
 let tygameUrl=''
-let showtyUrl=false
+let showtyUrl=false;
+let showiframeLoad=false
 const state = {
     suspension,//直播间悬浮显隐
     interactdata,//h互动消息列表
@@ -795,6 +796,7 @@ const state = {
   oftenCard,//充值常用卡号
   tygameUrl,//游戏网址
   showtyUrl,
+  showiframeLoad
 }
 
 export default state

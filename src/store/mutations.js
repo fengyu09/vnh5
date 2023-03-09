@@ -744,6 +744,9 @@ SETOFTENCARD(state,data){
 SETTYSHOW(state,data){
   state.showtyUrl=data;
 },
+SETIFRAMELOAD(state,data){
+  state.showiframeLoad=data;
+},
 }
 
 

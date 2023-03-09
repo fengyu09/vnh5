@@ -122,7 +122,7 @@
                         <i class="" v-show="oftenCard.length" @click="pickershow3 = true"
                             style="height: 0.6rem;width: 0.6rem;top: 0.1rem;"></i>
                     </li>
-                    <li style="height: 2rem;color: #fff;">
+                    <li style="height: 2rem;" :style="{'color':skin==5?'#fff':'#445779'}">
                         <span>{{ $t('cardRecharge[16]') }}</span> <input type="text" v-model="czMoney"
                             style="padding-left:45%" :placeholder="$t('cardRecharge[17]') +' K VND'">
                             <p>Thực tế trong tài khoản:{{ czMoney*1 }}</p>

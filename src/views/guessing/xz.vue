@@ -4055,7 +4055,7 @@ import allGAmeList from '../game/gameplay.vue'
               .rem(width,32);
               .rem(height,32);
               .rem(line-height,32);
-              .rem(font-size,15);
+              .rem(font-size,16);
               background: #F2F2F2;
               color: #838383;
               border-radius: 50%;

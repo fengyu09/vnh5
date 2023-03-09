@@ -31,7 +31,7 @@ import Foot from "../../components/footer.vue";
             
         },
         methods:{
-             ...mapMutations(["SETISSF","SETTYURL","SETTYSHOW"]),
+             ...mapMutations(["SETISSF","SETTYURL","SETTYSHOW","SETIFRAMELOAD"]),
             async initgame(){
                 let id = this.$route.params.id;
                 let type = this.$route.params.type;
@@ -166,7 +166,14 @@ import Foot from "../../components/footer.vue";
                 document.forms[0].submit();
             },
             async goGameUrl(url,id,flag,type){
-                this.$vux.loading.show({text: this.$t('loadingText2')+'...'});
+                // {text: this.$t('loadingText2')+'...'}
+                if(this.$route.params.code==-1){
+                    this.SETIFRAMELOAD(true)
+                }else{
+                    this.$vux.loading.show();
+                }
+               
+                
                 let obj={} ;
                 if(flag){
                     obj = {
@@ -186,6 +193,7 @@ import Foot from "../../components/footer.vue";
                 if(this.$route.params.code==-1&&this.tygameUrl!=''){
                     this.$vux.loading.hide();
                     this.SETTYSHOW(true)
+                    this.SETIFRAMELOAD(false)
                     return
                 }
                 let res=  await this.$http.get(url,{

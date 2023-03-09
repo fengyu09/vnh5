@@ -111,6 +111,9 @@
     <div class="float-bg" v-if="isshowHd" @click="isshowHd=false">
 
     </div>
+    <div class="iframe_load" v-if="showiframeLoad">
+      <img src="../public/logo2.png" alt="" srcset="">
+    </div>
     <iframe v-if="isloadTy" v-show="showtyUrl&&tygameUrl!=''" @load="rameLoad" :src="tygameUrl" id="myiframe" scrolling="no" frameborder="0"></iframe>
     
   </div>
@@ -204,7 +207,7 @@ export default {
   },
   
   computed: {
-    ...mapState(["isNotice","userinfo","onlinenumber","username","codeToken","webInitData","zcGifShow","skin","UserId","isPure","hotMatch","isBb","skin","historyGame","chatShow","currversion","defalutLan","lanCode",'defalutLan',"noticeData","tygameUrl","showtyUrl"]),
+    ...mapState(["isNotice","userinfo","onlinenumber","username","codeToken","webInitData","zcGifShow","skin","UserId","isPure","hotMatch","isBb","skin","historyGame","chatShow","currversion","defalutLan","lanCode",'defalutLan',"noticeData","tygameUrl","showtyUrl","showiframeLoad"]),
     keysV(){
    			return this.$route.path + Math.random()
    		}
@@ -294,6 +297,7 @@ export default {
     isloadTy:function(i){
       if(i){
         this.$vux.loading.show();
+       this.SETIFRAMELOAD(true)
       }
     }
   },
@@ -433,7 +437,7 @@ export default {
   filters:{
   },
   methods: {
-    ...mapMutations(["SETISNOTICE","SETPURE","SETONLINENUMBER","SETOPENPURE","SETPURE","SETOPENPURE2","SETWEBDATA","SETCLOSEDATA","SETZCGIF","SETSKINDATA","SETZJArr","SETCLDATA","SETUSERTOKEN","SETHOTMATCH","SETISBB","SETENCRYPT","SETCHAT","SETVERSION","SETMSGPOINT","SETLANLIST","SETDEFAULTLAN","SETNOTICEDATA","SETTYSHOW"]),
+    ...mapMutations(["SETISNOTICE","SETPURE","SETONLINENUMBER","SETOPENPURE","SETPURE","SETOPENPURE2","SETWEBDATA","SETCLOSEDATA","SETZCGIF","SETSKINDATA","SETZJArr","SETCLDATA","SETUSERTOKEN","SETHOTMATCH","SETISBB","SETENCRYPT","SETCHAT","SETVERSION","SETMSGPOINT","SETLANLIST","SETDEFAULTLAN","SETNOTICEDATA","SETTYSHOW","SETIFRAMELOAD"]),
 
     // 获取全局配置 语言 和 是否加密
     async getLanConfig(){
@@ -453,6 +457,7 @@ export default {
     },
     rameLoad(){
       this.$vux.loading.hide();
+      this.SETIFRAMELOAD(false)
     },
    changeVersion(n){
       this.SETVERSION(n);
@@ -840,20 +845,35 @@ export default {
   position: absolute;
 //   top: 1.2rem;
 }
-.weui-toast{
-  background: none;
-}
-.weui-icon_toast.weui-loading{
-  animation:none;
+.iframe_load{
   width: 92px;
-  height: 92px;
-  margin: 0;
-  background: url('../public/logo2.png') no-repeat;
-  background-size: 100% 100%;
+    height: 92px;
+    position: fixed;
+    left: 50%;
+    top: 180px;
+    z-index: 99999;
+    transform: translateX(-46px);
+  >img{
+    width: 100%;
+  }
 }
-.weui-loading_toast .weui-toast__content{
-  display: none;
+.vux-loading-no-text .weui-toast{
+  min-height: 92px;
 }
+// .weui-toast{
+//   background: none;
+// }
+// .weui-icon_toast.weui-loading{
+//   animation:none;
+//   width: 92px;
+//   height: 92px;
+//   margin: 0;
+//   background: url('../public/logo2.png') no-repeat;
+//   background-size: 100% 100%;
+// }
+// .weui-loading_toast .weui-toast__content{
+//   display: none;
+// }
   .key-box {
     position: fixed;
     width: 100%;
