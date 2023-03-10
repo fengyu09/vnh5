@@ -1009,7 +1009,9 @@ function bodyScroll(event){
     event.preventDefault();
 }
 router.beforeEach((to, from, next) => {
-    console.log(to.name)
+   if(from.name=='toGame'){
+    store.commit('SETIFRAMELOAD',false) ;
+   }
     if(to.name=='oldHome'||to.name=='toGame'){
         document.body.removeEventListener('touchmove',bodyScroll,false);
     }else{

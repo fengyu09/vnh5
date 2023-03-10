@@ -1986,7 +1986,8 @@ export default {
   .float-box{
     .rem(width,120);
     .rem(height, 120);
-    .defaultBtn{opacity: 0.6;}
+    .defaultBtn{
+      opacity: 1;}
     img{width: 100%;
     &.active{
       opacity: 1;
