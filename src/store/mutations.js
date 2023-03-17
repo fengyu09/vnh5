@@ -747,6 +747,9 @@ SETTYSHOW(state,data){
 SETIFRAMELOAD(state,data){
   state.showiframeLoad=data;
 },
+SETTYTYPE(state,data){
+  state.tyType=data;
+},
 }
 
 

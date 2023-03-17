@@ -23,7 +23,8 @@
         </router-link>
       </li>
       <li @click="getClick('体育',1)" :class="'padNone'+skin" class="padNoneli">
-        <router-link  to="/toGame/bbin_sport/sport/-1">
+        <!-- <router-link  to="/toGame/ibc_sport/sport/-1"> -->
+          <a :class="{'router-link-exact-active':isactive2}">
           <i v-if="skin==0" class="icon icon-ty icon-ty-active"></i>
           <i v-if="skin==1" class="icon ty-pink"></i>
           <i v-if="skin==2" class="icon ty-blue"></i>
@@ -31,7 +32,8 @@
           <i v-if="skin==4" class="icon ty-maingreen"></i>
           <i v-if="skin==5" class="icon ty-golden"></i>
           <p  class="active-p" >{{$t('home.footer[7]')}}</p>
-        </router-link>
+          </a>
+        <!-- </router-link> -->
       </li>
       <li @click="getClick('充值',2)" :class="'padNone'+skin" class="cz-ft padNoneli">
         <!-- <router-link to="/" > -->
@@ -101,7 +103,7 @@
     </ul>
   </div>
   <div class="trade-box" :class="'tradedkin'+skin" v-show="isactive">
-          <div @click="$router.push('recharge')" class="tradecz">
+          <div @click="$router.push('recharge')" >
            <img v-if="skin==0" src="../assets/images/newHome/Frame22.png" alt="" srcset="" >
            <img v-if="skin==1" src="../assets/images/skin/pink/Frame22.png" alt="" srcset="" >
            <img v-if="skin==2" src="../assets/images/skin/blue/Frame22.png" alt="" srcset="" >
@@ -120,6 +122,26 @@
             <p>{{$t('newHome[13]')}}</p>
           </div>
       </div>
+      <div class="trade-box" style="left:0.9rem" :class="'tradedkin'+skin" v-show="isactive2">
+          <div @click="$router.push('/toGame/cmd_sport/sport/-1')" class="tradecz">
+           <img v-if="skin==0" src="../assets/images/newHome/Frame24.png" alt="" srcset="" >
+           <img v-if="skin==1" src="../assets/images/skin/pink/Frame24.png" alt="" srcset="" >
+           <img v-if="skin==2" src="../assets/images/skin/blue/Frame24.png" alt="" srcset="" >
+           <img v-if="skin==3" src="../assets/images/skin/green/Frame24.png" alt="" srcset="" >
+           <img v-if="skin==4" src="../assets/images/skin/maingreen/Frame24.png" alt="" srcset="" >
+           <img v-if="skin==5" src="../assets/images/skin/golden/Frame24.png" alt="" srcset="" >
+           <p>CMD</p>
+          </div>
+          <div @click="$router.push('/toGame/ibc_sport/sport/-1')" class="tradetx">
+            <img v-if="skin==0" src="../assets/images/newHome/Frame25.png" srcset="">
+            <img v-if="skin==1" src="../assets/images/skin/pink/Frame25.png" srcset="">
+            <img v-if="skin==2" src="../assets/images/skin/blue/Frame25.png" srcset="">
+            <img v-if="skin==3" src="../assets/images/skin/green/Frame25.png" srcset="">
+            <img v-if="skin==4" src="../assets/images/skin/maingreen/Frame25.png" srcset="">
+            <img v-if="skin==5" src="../assets/images/skin/golden/Frame25.png" srcset="">
+            <p>SABA</p>
+          </div>
+      </div>
   </div>
 </template>
 
@@ -133,7 +155,8 @@ export default {
       bet:'',
       gameBox:false,
       chessArr:'',
-      isactive:false
+      isactive:false,
+      isactive2:false
     };
   },
   computed: {
@@ -162,6 +185,17 @@ export default {
        this.isactive=!this.isactive;
       }else{
         this.isactive=false;
+        document.querySelectorAll('.padNoneli>a')[index].classList.add('router-link-exact-active')
+      }
+      if(type=='体育'){
+      if(!this.isactive2){
+        document.querySelectorAll('.padNoneli>a').forEach((res,id)=>{
+        res.classList.remove('router-link-exact-active')
+        })
+      }
+       this.isactive2=!this.isactive2;
+      }else{
+        this.isactive2=false;
         document.querySelectorAll('.padNoneli>a')[index].classList.add('router-link-exact-active')
       }
       if(type=='首页'){
@@ -258,6 +292,7 @@ export default {
     .tradecz{
      img{
       // margin-top: 0.05rem;
+      width: 0.9rem;
      }
     }
     .tradetx{

@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view :key="keysV"></router-view>
+    <!-- <router-view :key="keysV"></router-view> -->
+    <keep-alive :include="['preferential',]">
+       <router-view v-if="['Activities',].includes($route.name)" ></router-view>
+       <router-view v-else  :key="keysV"></router-view>
+    </keep-alive>
     <lg-preview></lg-preview>
 
 
@@ -114,7 +118,7 @@
     <div class="iframe_load" v-if="showiframeLoad">
       <img src="../public/logo2.png" alt="" srcset="">
     </div>
-    <iframe v-if="isloadTy" v-show="showtyUrl&&tygameUrl!=''" @load="rameLoad" :src="tygameUrl" id="myiframe" scrolling="no" frameborder="0"></iframe>
+    <iframe v-if="isloadTy" v-show="showtyUrl&&tygameUrl!=''" @load="rameLoad" :src="tygameUrl" id="myiframe" scrolling="yes" frameborder="0"></iframe>
     
   </div>
 </template>
@@ -456,8 +460,11 @@ export default {
 
     },
     rameLoad(){
-      this.$vux.loading.hide();
+      if(this.tygameUrl!=''){
+        this.$vux.loading.hide();
       this.SETIFRAMELOAD(false)
+      }
+      
     },
    changeVersion(n){
       this.SETVERSION(n);
@@ -469,8 +476,9 @@ export default {
       // this.$router.push('/oldHome');
     },
     goServe(){
-      this.$router.push('/service');
-      this.SETCHAT(false);
+      // this.$router.push('/service');
+      // this.SETCHAT(false);
+      window.open('https://direct.lc.chat/13287642/')
     },
     changeChat(){
       if(!this.codeToken) return this.$popup();

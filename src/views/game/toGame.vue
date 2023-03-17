@@ -22,7 +22,7 @@ import Foot from "../../components/footer.vue";
             }
         },
         computed: {
-        ...mapState(['tygameUrl']),
+        ...mapState(['tygameUrl','tyType']),
         },
         watch: {
            
@@ -31,7 +31,7 @@ import Foot from "../../components/footer.vue";
             
         },
         methods:{
-             ...mapMutations(["SETISSF","SETTYURL","SETTYSHOW","SETIFRAMELOAD"]),
+             ...mapMutations(["SETISSF","SETTYURL","SETTYSHOW","SETIFRAMELOAD","SETTYTYPE"]),
             async initgame(){
                 let id = this.$route.params.id;
                 let type = this.$route.params.type;
@@ -190,12 +190,14 @@ import Foot from "../../components/footer.vue";
                         game_id:id,
                     }
                 }
-                if(this.$route.params.code==-1&&this.tygameUrl!=''){
+                if(this.$route.params.code==-1&&this.tygameUrl!=''&&this.tyType==this.$route.params.type){
                     this.$vux.loading.hide();
                     this.SETTYSHOW(true)
                     this.SETIFRAMELOAD(false)
                     return
                 }
+                // this.SETTYSHOW(false)
+                this.SETTYURL('')
                 let res=  await this.$http.get(url,{
                     params:obj
                 },{timeout:60000});
@@ -203,6 +205,7 @@ import Foot from "../../components/footer.vue";
                 if(res&&res.data.code==1){
                   if(this.$route.params.code==-1){
                       this.SETTYURL(res.data.data.url)
+                      this.SETTYTYPE(this.$route.params.type)
                       this.SETTYSHOW(true)
                   }else{
                      location.href = res.data.data.url;
