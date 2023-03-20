@@ -97,7 +97,7 @@ Vue.prototype.version = "/api/user/"; //用户中心
 
 //打包需要切换
 // Vue.prototype.noticeType = 2; //代理
-Vue.prototype.noticeType = 1 //官方
+Vue.prototype.noticeType = 1 //官方111
 
 
 // Vue.prototype.defalutLan = 'vi-vn'; //默认语言 越南
