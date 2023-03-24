@@ -74,7 +74,7 @@
                             <img v-if="item.code == showGameCode" :src="item.icon1" alt="" srcset="">
                             <img v-else :src="item.icon" alt="" srcset="">
                         </li>
-                        <li class="swiper-slide" @click="$router.push('/live')">
+                        <!-- <li class="swiper-slide" @click="$router.push('/live')">
 
                             <img v-if="skin == 3" src="../../assets/images/skin/green/live-2.png" alt="" srcset="">
                             <img v-if="skin == 0" src="../../assets/images/newHome/live-2.png" alt="" srcset="">
@@ -82,7 +82,7 @@
                             <img v-if="skin == 2" src="../../assets/images/skin/blue/live-2.png" alt="" srcset="">
                             <img v-if="skin == 4" src="../../assets/images/skin/maingreen/live-2.png" alt="" srcset="">
                             <img v-if="skin == 5" src="../../assets/images/skin/golden/live.png" alt="" srcset="">
-                        </li>
+                        </li> -->
                         <li class="swiper-slide" @click="download" v-if="this.languageActive != 'en'">
                             <img v-if="skin == 3" src="../../assets/images/skin/green/xiazai-1.png" alt="" srcset="">
                             <img v-if="skin == 0" src="../../assets/images/newHome/xiazai-1.png" alt="" srcset="">
@@ -118,7 +118,7 @@
                     <img v-if="skin == 2" src="../../assets/images/newHome/jt_icon-4.png" alt="" srcset="">
                     <img v-if="skin == 5" src="../../assets/images/skin/golden/right_on.png" alt="" srcset="">
                 </i>
-                <i class="menu-jt" :class="{ gray: menuIndex >3 }" @click='toright' style="right:0;">
+                <i class="menu-jt" :class="{ gray: menuIndex >2 }" @click='toright' style="right:0;">
                     <img v-if="skin == 4 || skin == 3" src="../../assets/images/newHome/jt_icon.png" alt="" srcset="">
                     <img v-if="skin == 0" src="../../assets/images/newHome/jt_icon-2.png" alt="" srcset="">
                     <img v-if="skin == 1" src="../../assets/images/newHome/jt_icon-3.png" alt="" srcset="">

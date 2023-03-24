@@ -54,7 +54,17 @@ module.exports = {
                 }
             },
            
-       
+            '/nodeapi':{
+                target: 'http://154.92.15.136:8088/nodeapi',//生产 1203 ip
+               //  target:'https://k188.bet/api/',//生产2022 0103 域名 yn
+               // target: 'http://156.238.14.72:18305/api',//测试2021.1.4 yn
+               // target:'http://54.255.11.229:18313/api',//英文站 2022 4.12 租赁的英文站 测试
+               changeOrigin: true, // 允许websockets跨域
+               ws: true,
+               pathRewrite: {
+                   '^/nodeapi': ''
+               }
+           },
          
             '/getapi':{
                 // target: 'https://ilgzbadmin.com/getapi',//线上的
@@ -97,6 +107,7 @@ module.exports = {
         historyApiFallback:{
             index:'/index.html'
         },
+        https: false
        
     },
     // 第三方插件配置

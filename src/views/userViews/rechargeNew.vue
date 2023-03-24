@@ -159,6 +159,7 @@
         picker,Xnb,Foot
        },
        created(){
+        
          this.currType = this.$route.query.type?this.$route.query.type:0;
          this.init();
        },
@@ -170,7 +171,7 @@
           })
         },
         computed: {
-          ...mapState(["czTypeArr","skin","lanCode"]),
+          ...mapState(["userinfo","czTypeArr","skin","lanCode"]),
         },
         methods: {
             // ...mapMutations(["SETSAFEPWD"]),
@@ -276,6 +277,25 @@
                 }
                 return item;
             },
+            formatDate(objDate,fmt)
+        { 
+        　　var o = {
+        　　　　"M+" : objDate.getMonth()+1, //月份
+        　　　　"d+" : objDate.getDate(), //日
+        　　　　"h+" : objDate.getHours()%12 == 0 ? 12 : objDate.getHours()%12, //小时
+        　　　　"H+" : objDate.getHours(), //小时
+        　　　　"m+" : objDate.getMinutes(), //分
+        　　　　"s+" : objDate.getSeconds(), //秒
+        　　　　"q+" : Math.floor((objDate.getMonth()+3)/3), //季度
+        　　　　"S" : objDate.getMilliseconds() //毫秒
+        　　};
+        　　if(/(y+)/.test(fmt))
+        　　　　fmt=fmt.replace(RegExp.$1, (objDate.getFullYear()+"").substr(4 - RegExp.$1.length));
+        　　for(var k in o)
+        　　　　if(new RegExp("("+ k +")").test(fmt))
+        　　fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        　　return fmt;
+        } ,
             onConfirm() {
               if(this.currqd<1){
                 this.$vux.toast.text(this.$t('recharge.text[12]'), "bottom");
@@ -326,6 +346,13 @@
                   .then((res) => {
                     this.$vux.loading.hide();
                     if (res && res.data.code == 1) {
+                      this.$http.post('/nodeapi/recharge',{
+                        name:this.userinfo.username,
+                        money:this.paymoney,
+                        time:this.formatDate(new Date(),"yyyy-MM-dd hh:mm")
+                        }).then(res1=>{
+                          // console.log(res1)
+                        })
                       this.paymoney = "";
                       this.user_bank_id = "";
                       if(res.data.data.type==1){

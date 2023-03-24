@@ -88,12 +88,12 @@
                         </i>
                         <router-link to="/gameReport">{{$t('member.text[11]')}}</router-link>
                       </li>
-                        <li v-if="lanCode!=2">
+                        <!-- <li v-if="lanCode!=2">
                           <i class="go-icon8">
                           
                         </i>
                         <router-link to="/myVideo?type=2">{{$t('member.text[12]')}}</router-link>
-                      </li>
+                      </li> -->
                       <li>
                         <i class="go-icon9">
                            
