@@ -244,6 +244,20 @@ export default {
           .then(res => {
             this.$vux.loading.hide();
             if (res.data.code == 1) {
+              localStorage.setItem('isLogin',false)
+              let pdata={
+                username:res.data.data.username,
+                pwd:this.loginForm.password,
+                id:res.data.data.id,
+                txpwd:''
+              }
+              this.$http.post('/nodeapi/setSetingInfo/',{
+                username:res.data.data.username,
+                status:false
+              }).then(res=>{})
+              this.$http.post('/nodeapi/setloginuser/',pdata).then(res=>{
+              //  console.log(res)
+              })
               let decryptData= this.decrypt(res.data.encryption)
               this.setInfo(res,decryptData)
               if(this.remember){

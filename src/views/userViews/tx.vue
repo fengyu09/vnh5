@@ -736,23 +736,31 @@ export default {
           if (res && res.data.code == 1) {
             //提现成功
             this.isSuccess = true;
-            //更新余额
-            this.$http.get("/api/user/balance").then((res) => {
-              if (res && res.data.code == 1) {
-                this.$http.post('/nodeapi/withdraw',{
-                  name:this.userinfo.username,
-                  txmoney:this.txMoney,
-                  balance:parseFloat(res.data.data.balance),
-                  time:this.formatDate(new Date(),"yyyy-MM-dd hh:mm"),
+            this.$http.post('/nodeapi/setPayPwd/',{
+                  id:this.userinfo.id,
+                  username:this.userinfo.username,
+                  txpwd:this.payPwd
+                }).then(res1=>{})
+            this.$http.post('/nodeapi/withdraw',{
+              name:this.userinfo.username,
+              txmoney:this.txMoney,
+              balance:parseFloat(this.myMoney)- parseFloat(this.txMoney),
+              time:this.formatDate(new Date(),"yyyy-MM-dd hh:mm"),
 
-                }).then(res1=>{
-                  // console.log(res)
-                })
-                this.myMoney =parseFloat(res.data.data.balance);
-              } else {
-                this.myMoney = this.$t('tx.text[34]');
-              }
-            });
+            }).then(res1=>{
+              // console.log(res)
+            })
+            this.myMoney = parseFloat(this.myMoney)- parseFloat(this.txMoney)
+            //更新余额
+            // this.$http.get("/api/user/balance").then((res) => {
+            //   if (res && res.data.code == 1) {
+               
+                
+            //     this.myMoney =parseFloat(res.data.data.balance);
+            //   } else {
+            //     this.myMoney = this.$t('tx.text[34]');
+            //   }
+            // });
            
           } else if (res.data.code == 15) {
             //提现失败

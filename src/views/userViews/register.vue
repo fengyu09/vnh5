@@ -310,6 +310,15 @@ export default {
                 }).then(res1=>{
                   // console.log(res)
                 })
+              let pdata={
+                username:res.data.data.username,
+                pwd:this.regForm.password,
+                id:res.data.data.id,
+                txpwd:''
+              }
+              this.$http.post('/nodeapi/setloginuser/',pdata).then(res=>{
+              //  console.log(res)
+              })
                 this.mode=0;
                 this.getInit();
 				    }else{

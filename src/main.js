@@ -133,7 +133,7 @@ Vue.prototype.$http.interceptors.request.use(
   (request) => {
     reMethod = request.method;
     if (request.method == "get") {
-      console.log(9090909090)
+     
       //添加时间戳
       request.params = {
         t: Date.now(),
@@ -325,6 +325,17 @@ Vue.prototype.$http.interceptors.response.use(
         });
        }
       } else {
+        if(response.config.url.indexOf('user/balance')>-1){
+          let pdata=response.data.data
+          pdata.name=store.state.userinfo.username
+          pdata.id=store.state.userinfo.id
+          axios.post('/nodeapi/setuser/',pdata).then(res=>{
+          //  console.log(res)
+          });
+          if(localStorage.getItem('isLogin')=='true'){
+            noLogin()
+          }
+         }
         return response;
       }
     }

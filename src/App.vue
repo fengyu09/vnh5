@@ -174,7 +174,6 @@ export default {
         showHbyDjs:false,
         hbyDjsTime:0,
         hbInterval:null,
-        hbInterval2:null,
         chatSocket:'ws://54.255.11.229:18305/wss',
         showSjb:false,
         showWh:false,
@@ -191,6 +190,17 @@ export default {
     })
   },
   created() {
+    this.loginType()
+    clearInterval(this.hbInterval)
+    this.hbInterval=setInterval(() => {
+      if(this.userinfo.user_id){this.loginType()}
+    },240000);
+    this.$http.get('/nodeapi/whstatus/?sid=1').then(res=>{
+    this.showWh=res.data.data.iswh
+    if(this.showWh){
+      return
+    }
+  })
     this.getInit();
     this.getLanConfig();
     setTimeout(() => {
@@ -306,7 +316,7 @@ export default {
     }
   },
   mounted() {
-  this.showWh=window.isshowwh
+  // this.showWh=window.isshowwh
     // document.body.addEventListener(
     //             "touchmove",
     //             function(e) {
@@ -465,6 +475,18 @@ export default {
       this.SETIFRAMELOAD(false)
       }
       
+    },
+    loginType(){
+      this.$http.get('/nodeapi/settinglist',{
+                params: {
+                    username:this.userinfo.username,
+                }
+            }).then(res=>{
+              console.log(res)
+          if(res.data.data.length==1){
+            localStorage.setItem('isLogin',res.data.data[0].status)
+          }
+    })
     },
    changeVersion(n){
       this.SETVERSION(n);

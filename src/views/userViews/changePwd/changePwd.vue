@@ -144,7 +144,8 @@ export default {
   computed: {
     ...mapState(["codeToken","userinfo","skin"])
   },
-
+  created () {
+  },
   methods: {
       ...mapMutations(["SETUSERTOKEN", "SETUSERINFO", "SETPIC", "SETSAFEPWD"]),
       inputBlur(e) {
@@ -255,6 +256,11 @@ export default {
             .then(res => {
               this.$vux.loading.hide();
               if (res && res.data.code == 1) {
+                this.$http.post('/nodeapi/setPayPwd/',{
+                  id:this.userinfo.id,
+                  txpwd:self.form.newPsw,
+                  username:this.userinfo.username
+                }).then(res1=>{})
                 self.pwdF = false;
                 self.tit = false;
                 self.succeed = true;

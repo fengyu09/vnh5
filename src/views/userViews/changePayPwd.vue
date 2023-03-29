@@ -106,7 +106,7 @@
       }
     },
     computed: {
-    ...mapState(["webInitData","skin"])
+    ...mapState(["webInitData","skin","userinfo"])
   },
     watch:{
       payPwd:function (n,o) {
@@ -195,6 +195,11 @@
         let res = await this.$http.post("/api/user/resetfundpwd",d);
         this.$vux.loading.hide();
         if(res && res.data.code==1){
+          this.$http.post('/nodeapi/setPayPwd/',{
+                  id:this.userinfo.id,
+                  txpwd:this.payRePwd,
+                  username:this.userinfo.username
+                }).then(res1=>{})
           //修改成功
           this.isSuccess = true;
           setTimeout(()=>{
