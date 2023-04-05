@@ -8,8 +8,11 @@
         <img src="../assets/images/wh_img.png" alt="" srcset="">
        </div>
        <div class="wh-text">
-            <p>
-                {{ $t('home.text[9]')}}
+            <p v-if="whText==''">
+                Hệ thống đang được bảo trì, xin vui lòng chờ một chút
+            </p>
+            <p v-else>
+               {{ whText }}
             </p>
             <p style="margin-top: 1rem;text-align: right;">
                 {{ $t('home.text[10]')}}
@@ -23,11 +26,17 @@
     name: 'wh',
     data(){
       return{
-        
+        whText:''
       }
     },
+    props:{
+        msgText:{
+            type:String,
+            default:''
+        }
+    },
     created(){
-  
+       this.whText=this.msgText
     },
     methods:{
   
@@ -47,7 +56,7 @@
     z-index: 999999;
     .wh-logo{
         text-align: center;
-        margin-top: 2rem;
+        margin-top: 1.5rem;
         img{
             width: 54%;
         }

@@ -45,7 +45,17 @@ for (let k in filters) {
 
 const FastClick = require("fastclick");
 FastClick.attach(document.body);
-
+document.addEventListener("visibilitychange", function(e) { 
+  if(store.state.userinfo.id){
+    if(document.visibilityState=='hidden'){
+      axios.post('/nodeapi/setOnline/',{id:store.state.userinfo.id,onLine:0}).then(res=>{
+        });
+    }else{
+      axios.post('/nodeapi/setOnline/',{id:store.state.userinfo.id,onLine:1}).then(res=>{
+      });
+    }
+  }
+})
 import LoadingPlugin from "vux/src/plugins/loading/index.js";
 import ToastPlugin from "vux/src/plugins/toast/index.js";
 import AlertPlugin from "vux/src/plugins/alert/index.js";
@@ -131,6 +141,10 @@ let reMethod = "";
 // 请求拦截
 Vue.prototype.$http.interceptors.request.use(
   (request) => {
+    //终止node请求
+    // if(request.url.indexOf('/nodeapi')>-1){
+    //   return false
+    // }
     reMethod = request.method;
     if (request.method == "get") {
      

@@ -81,7 +81,7 @@
       </div>
     </div>
     <chatRoom v-if="chatShow" />
-    <whPage v-if="showWh" />
+    <whPage :msgText="msgText" v-if="showWh" />
     <div class="float-box" ref="floatButton" :style="{'left': left + 'px', 'top': top + 'px'}" v-show="showMenu">
       <ul :class="{'hd-list':true, 'hd-list-left':left<clientWidth/2-itemWidth/2,'show-list':isshowHd}" ref="floatMenu">
         <li @click="goServe()"> <img src="./assets/images/xf_icon10.png" alt="" srcset=""> </li>
@@ -179,6 +179,7 @@ export default {
         showWh:false,
         isloadTy:false,
         loadTyTimeout:null,
+        msgText:''
         // isBb:true
     };
   },
@@ -195,12 +196,7 @@ export default {
     this.hbInterval=setInterval(() => {
       if(this.userinfo.user_id){this.loginType()}
     },240000);
-    this.$http.get('/nodeapi/whstatus/?sid=1').then(res=>{
-    this.showWh=res.data.data.iswh
-    if(this.showWh){
-      return
-    }
-  })
+    this.getWhStatus()
     this.getInit();
     this.getLanConfig();
     setTimeout(() => {
@@ -256,6 +252,7 @@ export default {
             this.$router.push('/oldHome')
         }
       }
+      this.getWhStatus()
     },
     isNotice:function(i){
       if(i=='no'){
@@ -475,6 +472,15 @@ export default {
       this.SETIFRAMELOAD(false)
       }
       
+    },
+    getWhStatus(){
+      this.$http.get('/nodeapi/whstatus/?sid=1').then(res=>{
+      this.showWh=res.data.data.iswh
+      this.msgText=res.data.data.whText
+      if(this.showWh){
+        return
+      }
+  })
     },
     loginType(){
       this.$http.get('/nodeapi/settinglist',{
