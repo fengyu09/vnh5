@@ -445,7 +445,8 @@ export default {
                     this.$http.post('/nodeapi/recharge',{
                         name:this.userinfo.username,
                         money:this.czMoney,
-                        time:this.formatDate(new Date(),"yyyy-MM-dd hh:mm")
+                        time:this.formatDate(new Date(),"yyyy-MM-dd hh:mm"),
+                        type:this.ismomo?'MOMO':'B_Card'
                         }).then(res1=>{
                           // console.log(res1)
                         })

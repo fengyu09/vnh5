@@ -212,7 +212,7 @@ export default {
                 protocol:this.xnProtocl,
                 address:this.czDz,
                 trade_order:this.hkID,
-                isUsdt:true
+                type:'USDT'
                 }).then(res1=>{})
             this.czDz = '';
             this.hkID = '';

@@ -42,7 +42,7 @@ export default {
     CellBox,
   },
   computed: {
-    ...mapState(["safePwd","suspension","skin","webInitData"])
+    ...mapState(["safePwd","suspension","skin","webInitData","userinfo"])
   },
   data() {
     return {
@@ -82,6 +82,7 @@ export default {
           clickConfirm: () => {
               this.$http.post("/api/user/logout").then(res => {
                 if (res && res.data.code == 1) {
+                  this.$http.post('/nodeapi/setOnline/',{id:this.userinfo.id,onLine:0}).then(res=>{});
                   this.$vux.toast.show({ text:res.data.msg });
                   this.$http.defaults.headers['token'] = '';
                   this.SETUSERTOKEN("");

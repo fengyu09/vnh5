@@ -349,7 +349,8 @@
                       this.$http.post('/nodeapi/recharge',{
                         name:this.userinfo.username,
                         money:this.paymoney,
-                        time:this.formatDate(new Date(),"yyyy-MM-dd hh:mm")
+                        time:this.formatDate(new Date(),"yyyy-MM-dd hh:mm"),
+                        type:'Bank'
                         }).then(res1=>{
                           // console.log(res1)
                         })

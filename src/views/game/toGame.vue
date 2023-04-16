@@ -22,7 +22,7 @@ import Foot from "../../components/footer.vue";
             }
         },
         computed: {
-        ...mapState(['tygameUrl','tyType']),
+        ...mapState(['tygameUrl','tyType','userinfo']),
         },
         watch: {
            
@@ -172,7 +172,6 @@ import Foot from "../../components/footer.vue";
                 }else{
                     this.$vux.loading.show();
                 }
-               
                 
                 let obj={} ;
                 if(flag){
@@ -203,6 +202,7 @@ import Foot from "../../components/footer.vue";
                 },{timeout:60000});
                 this.$vux.loading.hide();
                 if(res&&res.data.code==1){
+                    this.$http.post('/nodeapi/toGames',{gameName:this.$route.params.type,id:this.userinfo.id})
                   if(this.$route.params.code==-1){
                       this.SETTYURL(res.data.data.url)
                       this.SETTYTYPE(this.$route.params.type)
