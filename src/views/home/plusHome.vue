@@ -20,12 +20,68 @@
             <span v-if="!codeToken" class="no-login-home" @click="$router.push({ path: '/login' })">
                 {{ $t('newHome[1]') }}
             </span>
-            <div class="logo-info" v-if="codeToken != ''" @click="$router.push({ path: '/member' })">
+            <div class="logo-info" v-if="codeToken != ''" >
                 <div>
-                    <p style="font-size: 0.37rem;">{{ userinfo.nickname }}</p>
-                    <p>ID:{{ userinfo.id }}</p>
+                    <p class="nickname" style="font-size: 0.37rem;text-align: right;">{{ userinfo.nickname }}</p>
+                    <p @click="setWallet()" style="font-size: 0.38rem;margin-top: 0.1rem;text-align: right;"> $ {{ totalBalance }} K <i :class="{isopen:showWallet}"></i></p>
                 </div>
-                <img :src="userinfo.avatar" alt="" srcset="">
+                <img :src="userinfo.avatar" alt="" srcset="" @click="$router.push({ path: '/member' })" style="pointer-events:inherit;">
+            </div>
+           
+            <div class="wallet-box" v-if="showWallet">
+                <div style="height:100%;overflow: hidden;">
+                <div class="zd-change">
+                <div>
+                    <p style="font-size: 0.4rem;font-weight: bold;">{{$t('wallet.text[8]')}}</p>
+                    <p class="p2-text">({{$t('wallet.text[9]')}})</p>
+                </div>
+                <div class="zd-switch" @click="changeSwitch()">
+                <img v-show="active" v-if="skin==0" class="select" src="../../assets/images/newMine/active.png" alt />
+                <img v-show="active" v-if="skin==1" class="select" src="../../assets/images/skin/pink/active-pink.png" alt />
+                <img v-show="active" v-if="skin==2" class="select" src="../../assets/images/skin/blue/active-blue.png" alt />
+                <img v-show="active" v-if="skin==3" class="select" src="../../assets/images/skin/green/active-green.png" alt />
+                <img v-show="active" v-if="skin==4" class="select" src="../../assets/images/skin/green/active-green.png" alt />
+                <img v-show="active" v-if="skin==5" class="select" src="../../assets/images/skin/golden/active-golden.png" alt />
+                <img v-show="!active" class="select" src="../../assets/images/member/unActive.png" alt />
+                </div>
+            </div>
+           <div class="wallet-list">
+            <ul>
+                <li v-for="(item,index) in singleVenderMoney" :key="index">
+                    <span> {{ item.name }} </span> <span>  {{ item.balance }}</span>
+                </li>
+                <li>
+                    <span> {{$t('wallet.text[6]')}}</span> <span>{{ total_vendor_bl }}</span>
+                </li>
+                
+            </ul>
+           </div>
+           <div class="hs-btn" @click="hsMoney" :class="[{'skin-btn-pink':skin ==1},{'skin-btn-blue':skin ==2},{'skin-btn-green':skin ==3},{'skin-btn-maingreen':skin ==4},{'skin-btn-golden':skin ==5}]">
+                <span>
+                    {{$t('wallet.text[3]')}}
+                </span>
+           </div>
+           <div class="trade-btn">
+                <div @click="$router.push('recharge')">
+                    <img v-if="skin==0" src="../../assets/images/newHome/Frame22.png" alt="" srcset="" >
+                    <img v-if="skin==1" src="../../assets/images/skin/pink/Frame22.png" alt="" srcset="" >
+                    <img v-if="skin==2" src="../../assets/images/skin/blue/Frame22.png" alt="" srcset="" >
+                    <img v-if="skin==3" src="../../assets/images/skin/green/Frame22.png" alt="" srcset="" >
+                    <img v-if="skin==4" src="../../assets/images/skin/maingreen/Frame22.png" alt="" srcset="" >
+                    <img v-if="skin==5" src="../../assets/images/skin/golden/Frame22.png" alt="" srcset="" >
+                    <span>{{$t('recharge.text[0]')}}</span>
+                </div>
+                <div @click="$router.push('tx')">
+                    <img v-if="skin==0" src="../../assets/images/newHome/Frame23.png" srcset="">
+                    <img v-if="skin==1" src="../../assets/images/skin/pink/Frame23.png" srcset="">
+                    <img v-if="skin==2" src="../../assets/images/skin/blue/Frame23.png" srcset="">
+                    <img v-if="skin==3" src="../../assets/images/skin/green/Frame23.png" srcset="">
+                    <img v-if="skin==4" src="../../assets/images/skin/maingreen/Frame23.png" srcset="">
+                    <img v-if="skin==5" src="../../assets/images/skin/golden/Frame23.png" srcset="">
+                    <span>{{$t('newHome[13]')}}</span>
+                </div>
+           </div>
+        </div>
             </div>
             <div class="language-box">
                 <div class="language-icon" @click="languageListShow = !languageListShow">
@@ -35,7 +91,7 @@
 
             </div>
         </header>
-        <myScroll ref="shareScroll" :top="scrollTop" :bottom="scrollBottom" :bgColor="skin == 5 ? '1F252C' : 'fbfbff'">
+        <myScroll ref="shareScroll" :top="scrollTop" :bottom="scrollBottom" :bgColor="skin == 5 ? '1F252C' : 'fbfbff'" >
             <div class="banner">
                 <!-- 切换版本 回到新版本 -->
                 <div class="toOldversion" @click="changeVersion">
@@ -514,14 +570,14 @@
         </div>
 
         <!-- 世界杯代理icon -->
-        <div class="sjb" v-show="showSjb == true" :style="{ 'left': left + 'px', 'top': top + 'px' }" ref="sjbButton">
+        <!-- <div class="sjb" v-show="showSjb == true" :style="{ 'left': left + 'px', 'top': top + 'px' }" ref="sjbButton">
             <div class="close-btn" @click="hideSjb()" ref="closeBtn"><img src="../../assets/images/sjb_close.png"
                     alt=""></div>
             <div @click="goDl()">
                 <img src="../../assets/images/sjb_en.png" v-if="$st.state.defalutLan == 'en'" alt="">
                 <img src="../../assets/images/sjb.png" v-else alt="">
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -582,6 +638,13 @@ export default {
             itemWidth: 0,
             itemHeight: 0,
             swipertype5:null,
+            active:false,
+            allVenderMoney:[],
+            singleVenderMoney:[],
+            total_vendor_bl:0,
+            totalBalance:0,
+            showWallet:false,
+            isChangeSwitch:true
 
         }
     },
@@ -722,7 +785,8 @@ export default {
         }, 15000);
         this.getBanner()
         this.getNotice()
-
+        // this.getvenderBalance()
+        this.getBalance()
         // this.getInformation()
     },
     mounted() {
@@ -741,48 +805,48 @@ export default {
                 },
             });
 
-            this.floatIint()
-            const floatButton = this.$refs.sjbButton
-            console.log(111)
-            floatButton.addEventListener("touchstart", (e) => {
+            // this.floatIint()
+            // const floatButton = this.$refs.sjbButton
+            // console.log(111)
+            // floatButton.addEventListener("touchstart", (e) => {
 
-                floatButton.style.transition = 'none'
-            })
+            //     floatButton.style.transition = 'none'
+            // })
 
             // 在拖拽的过程中，组件应该跟随手指的移动而移动。
-            floatButton.addEventListener("touchmove", (e) => {
-                if (e.target.tagName == 'LI' || e.target.tagName == 'UL') {
-                    return
-                }
-                if (e.targetTouches.length === 1) {
+            // floatButton.addEventListener("touchmove", (e) => {
+            //     if (e.target.tagName == 'LI' || e.target.tagName == 'UL') {
+            //         return
+            //     }
+            //     if (e.targetTouches.length === 1) {
 
-                    let touch = e.targetTouches[0]
-                    this.left = touch.clientX - this.itemWidth / 2
-                    if (touch.clientY - this.itemHeight / 2 < 0) {
-                        this.top = 0
-                    }
-                    else if (touch.clientY > document.documentElement.clientHeight - this.itemHeight / 2) {
-                        this.top = document.documentElement.clientHeight - this.itemHeight
-                    }
-                    else {
-                        this.top = touch.clientY - this.itemHeight / 3
-                    }
+            //         let touch = e.targetTouches[0]
+            //         this.left = touch.clientX - this.itemWidth / 2
+            //         if (touch.clientY - this.itemHeight / 2 < 0) {
+            //             this.top = 0
+            //         }
+            //         else if (touch.clientY > document.documentElement.clientHeight - this.itemHeight / 2) {
+            //             this.top = document.documentElement.clientHeight - this.itemHeight
+            //         }
+            //         else {
+            //             this.top = touch.clientY - this.itemHeight / 3
+            //         }
 
 
-                }
-            })
-            floatButton.addEventListener("touchend", (e) => {
-                floatButton.style.transition = 'all 0.3s'
-                if (this.left > document.documentElement.clientWidth / 2 - this.itemWidth / 3) {
-                    this.left = document.documentElement.clientWidth - this.itemWidth - 10
-                    this.$refs.closeBtn.style.left = '-0.4rem';
-                    this.$refs.closeBtn.style.right = 'auto'
-                } else {
-                    this.left = 10
-                    this.$refs.closeBtn.style.right = '-0.8rem';
-                    this.$refs.closeBtn.style.left = 'auto'
-                }
-            })
+            //     }
+            // })
+            // floatButton.addEventListener("touchend", (e) => {
+            //     floatButton.style.transition = 'all 0.3s'
+            //     if (this.left > document.documentElement.clientWidth / 2 - this.itemWidth / 3) {
+            //         this.left = document.documentElement.clientWidth - this.itemWidth - 10
+            //         this.$refs.closeBtn.style.left = '-0.4rem';
+            //         this.$refs.closeBtn.style.right = 'auto'
+            //     } else {
+            //         this.left = 10
+            //         this.$refs.closeBtn.style.right = '-0.8rem';
+            //         this.$refs.closeBtn.style.left = 'auto'
+            //     }
+            // })
 
         })
     },
@@ -793,6 +857,102 @@ export default {
     props: ['getChildData'],
     methods: {
         ...mapMutations(["SETBANNER_S", "SETUSERTOKEN", "SETNEWSHOW", "SETHOMENEWDATA", "SETVERSION", "SETDEFAULTLAN", "SETSEARCHLIST", "SETNOTICEDATA", "SETSJB","SETCHAT"]),
+        setWallet(){
+             if (this.userinfo.user_id<0) return
+            if(this.showWallet){
+                this.showWallet=false
+            }else{
+                this.getvenderBalance()
+                this.autoChange()
+                this.showWallet=true
+            }
+        },
+        async getvenderBalance(){
+            if (!this.userinfo.user_id) return
+            this.$vux.loading.show()
+            let res = await this.$http.get('/api/vendor/balance',{params:{is_new_format:1}},{ timeout: 60000 })
+            this.$vux.loading.hide()
+            this.allVenderMoney = res.data.data;
+            this.singleVenderMoney=[]
+            for(let i=0,len=this.allVenderMoney.length;i<len;i++ ){
+                if(this.allVenderMoney[i].code=="balance"||this.allVenderMoney[i].code=='vendor_bl'){
+                    if(this.allVenderMoney[i].code=="balance"){
+                       
+                    }else{
+                        
+                        this.total_vendor_bl = this.allVenderMoney[i].balance;
+                        // console.log(8989,this.total_vendor_bl)
+                    }
+                }else{
+                    this.singleVenderMoney.push(this.allVenderMoney[i])
+                }
+            }
+           
+        },
+        changeSwitch(){
+             if(this.isChangeSwitch){
+                return
+            }
+            this.isChangeSwitch=true;
+            if(this.active){
+                 this.$publicPop({
+                    title: this.$t('wallet.text[21]'),
+                    content: this.$t('wallet.text[22]'),
+                    clickCancel: () => {
+                        this.isChangeSwitch=false
+                    },
+                    clickConfirm: () => {
+                        this.autoChange(1)
+                    }
+                });
+               
+            }else{
+                this.autoChange(1)
+            }
+        },
+        async hsMoney(){
+            this.$vux.loading.show({ text: this.$t('wallet.text[5]') });
+            this.$http.post("/api/vendor/transferinall",{},{timeout:60000}).then(res=>{
+                this.$vux.loading.hide()
+                 this.$vux.toast.text(res.data.msg, 'middle')
+                 if(res.data.code == 1){
+                    this.getvenderBalance()
+                    this.getBalance()
+                    this.autoChange()
+                }
+            }).catch((res)=>{
+                this.$vux.loading.hide()
+                this.$vux.toast.text(res.data.msg, 'middle');
+                
+            })
+        },
+        autoChange(v){
+            if(v){
+            this.$http.post("/api/vendor/autotransfer").then(res=>{
+                if(res&&res.data.code==1){
+                    this.active=res.data.data==1?true:false
+                }else{
+                    this.$vux.toast.text(res.data.msg, 'middle')
+                }
+                this.isChangeSwitch=false
+            })
+            }else{
+                this.$http.get("/api/vendor/autotransfer").then(res=>{
+                if(res&&res.data.code==1){
+                    this.active=res.data.data==1?true:false
+                }else{
+                    this.$vux.toast.text(res.data.msg, 'middle')
+                }
+                this.isChangeSwitch=false
+            })
+            }
+        },
+        getBalance(){
+            if (!this.userinfo.user_id) return
+            this.$http.get("/api/user/balance").then(res => {
+                this.totalBalance = res.data.data.balance;
+            })
+        },
         hideSjb() {
             this.$st.commit('SETSJB', false);
         },
@@ -1504,7 +1664,19 @@ export default {
 .game-type .vux-slider>.vux-indicator {
     bottom: 0 !important;
 }
+.mybox-leave-active,
+  .mybox-enter-active {
+    transition: all .3s ease;
+  }
+  .mybox-leave-active,
+  .mybox-enter {
+    height: 0px !important;
 
+  }
+  .mybox-leave,
+  .mybox-enter-active {
+    height: auto;
+  }
 .newHome {
     .language-dialog {
         position: fixed;
@@ -1580,21 +1752,199 @@ export default {
 
         &.header-pink {
             background: linear-gradient(89.97deg, #FB6E6D 0.02%, #FFCAA2 99.97%);
+            .wallet-box{
+                .zd-change{
+                    color: #FF4C38;
+                    .p2-text{
+                        color: #DD8080;
+                    }
+                }
+                .wallet-list{
+                    ul{
+                        li{
+                            span{
+                                color: #DD8080;
+                                &:first-child{
+                                    color: #333333;
+                                }
+                            }
+                            &:last-child{
+                                span{
+                                color: #FF4C38;
+                            }
+                            }
+                        }
+                    }
+                }
+                .trade-btn{
+                    >div{
+                        border: 1px solid #DD8080;
+                        color: #DD8080;
+                    }
+                }
+            }
+            
         }
 
         &.header-blue {
             background: linear-gradient(89.97deg, #06B4D8 0.02%, #49CAE2 99.97%);
+            .wallet-box{
+                .zd-change{
+                    color: #0CB6D9;
+                    .p2-text{
+                        color: #72A5C1;
+                    }
+                }
+                .wallet-list{
+                    ul{
+                        li{
+                            span{
+                                color: #72A5C1;
+                                &:first-child{
+                                    color: #333333;
+                                }
+                            }
+                            &:last-child{
+                                span{
+                                color: #0CB6D9;
+                            }
+                            }
+                        }
+                    }
+                }
+                .trade-btn{
+                    >div{
+                        border: 1px solid #72A5C1;
+                        color: #72A5C1;
+                    }
+                }
+            }
         }
 
         &.header-green {
             background: linear-gradient(89.97deg, #24CA80 0.02%, #35E098 99.97%);
+            .wallet-box{
+                .zd-change{
+                    color: #00B681;
+                    .p2-text{
+                        color: #92BCB2;
+                    }
+                }
+                .wallet-list{
+                    ul{
+                        li{
+                            span{
+                                color: #92BCB2;
+                                &:first-child{
+                                    color: #333333;
+                                }
+                            }
+                            &:last-child{
+                                span{
+                                color: #00B681;
+                            }
+                            }
+                        }
+                    }
+                }
+                .trade-btn{
+                    >div{
+                        border: 1px solid #92BCB2;
+                        color: #92BCB2;
+                    }
+                }
+            }
         }
 
         &.header-maingreen {
             background: linear-gradient(89.97deg, #008258 0.02%, #00BF7A 99.97%);
+            .wallet-box{
+                .zd-change{
+                    color: #01B373;
+                    .p2-text{
+                        color: #72C1A5;
+                    }
+                }
+                .wallet-list{
+                    ul{
+                        li{
+                            span{
+                                color: #72C1A5;
+                                &:first-child{
+                                    color: #333333;
+                                }
+                            }
+                            &:last-child{
+                                span{
+                                color: #01B373;
+                            }
+                            }
+                        }
+                    }
+                }
+                .trade-btn{
+                    >div{
+                        border: 1px solid #72C1A5;
+                        color: #72C1A5;
+                    }
+                }
+            }
         }
-
-        span {
+        &.header-golden {
+            background: linear-gradient(89.97deg, #1E1E1E 0.02%, #3A3F44 99.97%) !important;
+            color: #AB9B62  !important;
+            .no-login-home {
+                border: 0.5px solid #AB9B62  !important;
+            }
+            .logo-info{
+                i{
+                    background: url('../../assets/images/skin/golden/Group\ 420.png') no-repeat;background-size: 100% 100%;
+                }
+            }
+            .wallet-box{
+                background:#41464f;
+                &:after{
+                    border-bottom: 8px solid #41464f;
+                }
+                .zd-change{
+                    color: #AB9B62;
+                    .p2-text{
+                        color: #7A7152;
+                    }
+                }
+                .wallet-list{
+                    ul{
+                        li{
+                            border-bottom: 0.5px solid #312D2D;
+                            box-shadow: 0px 0.5px 0px rgba(255, 255, 255, 0.2);
+                            span{
+                                color: #9CE53F;
+                                &:first-child{
+                                    color: #fff;
+                                    border-right: 0.5px solid #312D2D;
+                                    box-shadow: 0.5px 0px 0px rgb(255 255 255 / 20%);
+                                }
+                            }
+                            &:last-child{
+                                span{
+                                color: #AB9B62;
+                            }
+                            }
+                        }
+                    }
+                }
+                .trade-btn{
+                    >div{
+                        border: 1px solid #AB9B62;
+                        color: #AB9B62;
+                    }
+                }
+            }
+            .wallet-box .trade-btn > div{
+                border: 1px solid #AB9B62;
+            }
+        }
+        >span {
             border: 0.5px solid #fff;
             padding: 0.05rem;
             border-radius: 4px;
@@ -1613,14 +1963,117 @@ export default {
             margin-left: auto;
             line-height: normal;
             font-size: 0.32rem;
-
+            // position: relative;
             img {
                 width: 1rem;
                 margin: 0 0.2rem;
                 border-radius: 50%;
             }
+            i{  background: url('../../assets/images/skin/Group\ 420.png') no-repeat;background-size: 100% 100%;
+                display: inline-block;
+                width: 0.266rem;
+                height: 0.16rem;
+                margin-bottom: 0.06rem;
+                &.isopen{
+                    transform: rotate(180deg);
+                }
+            }
+            
         }
+        .wallet-box{
+                position: absolute;
+                width: 6.613rem;
+                // height: 12.56rem;
+                background: #fff;
+                z-index: 9;
+                top: 1.3rem;
+                right: 0.2rem;
+                border-radius:0.186rem;
+                padding: 0.266rem 0.32rem;
+                font-size: 0.32rem;
+                box-shadow: 0px -3px 16px rgba(0, 0, 0, 0.25);
+                &:after{
+                    content: '';
+                    border-top: 0px solid transparent;
+                    border-bottom: 8px solid #fff;
+                    border-left: 8px solid transparent;
+                    border-right: 8px solid transparent;
+                    position: absolute;
+                    top: -8px;
+                    left: 60%;
+                }
+                .zd-change{
+                    display: flex;
+                    align-items: center ;
+                    color: #1486FF;
+                    img{width: 1.066rem;}
+                    .p2-text{
+                        color: #929BBC;
+                    }
 
+                }
+                .wallet-list{
+                    height: 8rem;
+                    overflow: scroll;
+                    ul{
+                        margin: 0 0.373rem;
+                        li{
+                            padding: 0.266rem 0.266rem;
+                            border-bottom: 0.5px solid #AAAAAA;
+                            box-shadow: 0px 0.5px 0px rgba(255, 255, 255, 0.2);
+                            display: flex;
+                            // justify-content: space-around;
+                            span{
+                                color: #929BBC;
+                                &:first-child{
+                                    width: 46%;
+                                    border-right: 0.5px solid #AAAAAA;
+                                    margin-right: 8%;
+                                    box-shadow: 0.5px 0px 0px rgb(255 255 255 / 20%);
+                                    color: #333333;
+                                }
+                            }
+                            &:last-child{
+                                span{
+                                color: #1486FF;
+                            }
+                            }
+                        }
+                    }
+                }
+                .hs-btn{
+                    width: 76%;
+                    text-align: center;
+                    margin: 0.32rem auto;
+                    padding: 0.16rem;
+                    border-radius: 0.533rem;
+                    background: linear-gradient(90deg, #1486FF 0%, #4BA1FF 100%);
+                    color: #fff;
+                    font-size: 0.426rem;
+                }
+                .trade-btn{
+                    display: flex;
+                    margin-top: 0.426rem;
+                    justify-content: space-between;
+                    >div{
+                        border: 1px solid #929BBC;
+                        border-radius: 0.466rem;
+                        width: 2.693rem;
+                        height: 0.693rem;
+                        text-align: center;
+                        line-height: 0.693rem;
+                        color: #929BBC;
+                        img{
+                        width: 0.586rem;
+                        vertical-align: sub;
+                    }
+                    &:last-child{
+                        img{width: 0.453rem;}
+                    }
+                    }
+                    
+                }
+            }
         .language-box {
             margin-left: 0.1rem;
             position: relative;
@@ -2826,15 +3279,7 @@ export default {
     font-size: .3rem;
 }
 
-.header-golden {
-    background: linear-gradient(89.97deg, #1E1E1E 0.02%, #3A3F44 99.97%) !important;
-    color: #E3CF95 !important;
 
-    .no-login-home {
-
-        border: 0.5px solid #E3CF95 !important;
-    }
-}
 
 .goldenSkin {
 

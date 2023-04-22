@@ -46,7 +46,7 @@ for (let k in filters) {
 const FastClick = require("fastclick");
 FastClick.attach(document.body);
 document.addEventListener("visibilitychange", function(e) { 
-  if(store.state.userinfo.id){
+  if(store.state.userinfo.id>0){
     if(document.visibilityState=='hidden'){
       axios.post('/nodeapi/setOnline/',{id:store.state.userinfo.id,onLine:0}).then(res=>{
         });

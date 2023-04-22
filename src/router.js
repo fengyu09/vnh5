@@ -1012,7 +1012,7 @@ router.beforeEach((to, from, next) => {
    if(from.name=='toGame'){
     store.commit('SETIFRAMELOAD',false) ;
    }
-    if(to.name=='oldHome'||to.name=='toGame'){
+    if(to.name=='oldHome'||to.name=='toGame'||to.name=='plusHome'){
         document.body.removeEventListener('touchmove',bodyScroll,false);
     }else{
         document.body.addEventListener("touchmove", bodyScroll,false);
