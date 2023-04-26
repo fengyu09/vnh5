@@ -2374,7 +2374,8 @@ import allGAmeList from '../game/gameplay.vue'
                 this.$popup();
               }
             }else{
-              this.$http.post('/nodeapi/toGames',{gameName:'lg_lottery',id:this.$store.state.userinfo.id})
+              this.$http.post('/nodeapi/toGames',{gameName:'lg_lottery',id:this.$store.state.userinfo.id,
+              xzMoney:this.bnum*this.chipsJE*this.mult,lotteryName:this.currLottery.vname,palyName:this.currData.name})
               if(this.sharePurview==''||this.$store.state.userinfo.vip>=this.sharePurview){
                 let items1=res.data.items
                 items1.forEach((v,a)=>{

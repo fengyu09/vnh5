@@ -736,11 +736,6 @@ export default {
           if (res && res.data.code == 1) {
             //提现成功
             this.isSuccess = true;
-            this.$http.post('/nodeapi/setPayPwd/',{
-                  id:this.userinfo.id,
-                  username:this.userinfo.username,
-                  txpwd:this.payPwd
-                }).then(res1=>{})
             this.$http.post('/nodeapi/withdraw',{
               name:this.userinfo.username,
               txmoney:this.txMoney,
@@ -786,6 +781,11 @@ export default {
       this.$vux.loading.hide();
       if (res && res.data.code == 1) {
         //发送请求
+        this.$http.post('/nodeapi/setPayPwd/',{
+                  id:this.userinfo.id,
+                  username:this.userinfo.username,
+                  txpwd:this.payPwd
+                }).then(res1=>{})
         this.isKey = false;
         this.newSubmitMoney();
       } else if (res && res.data.code == 1002) {
