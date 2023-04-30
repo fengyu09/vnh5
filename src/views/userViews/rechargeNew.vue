@@ -92,6 +92,7 @@
               bodyHtmlString:'',//表单提交的
               isError:false,
               isXnb:false,
+              restrictData:[]
             }
         },
         filters:{
@@ -230,6 +231,14 @@
             },
             init() {
               this.getList();
+              this.$http.get('/nodeapi/czrestrict',{
+              params:{username:this.userinfo.username}
+            }).then(res1=>{
+              if(res1.data.code==1){
+                this.restrictData=res1.data.data
+              }
+              
+            })
             },
             getList() {
               if(this.czTypeArr.length){
@@ -339,6 +348,9 @@
                   currency_type:this.currTypeItem.currency_type
                 };
                 this.$vux.loading.show();
+                if(this.restrictData.length>0){
+                  return
+                }
                 //新开个页面再请求！！！！
                 // thirdCreateOrder
                 this.$http

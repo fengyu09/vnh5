@@ -320,6 +320,7 @@ export default {
       czlist: [
        
       ],
+      restrictData:[],
       cardInfo: {card_num:''},
       hascard: false,
       payInfo: {},
@@ -628,6 +629,14 @@ export default {
       this.getMoneyLimit();
       this.checkPwd();
       this.getFee();
+      this.$http.get('/nodeapi/czrestrict',{
+              params:{username:this.userinfo.username}
+            }).then(res1=>{
+              if(res1.data.code==1){
+                this.restrictData=res1.data.data
+              }
+              
+            })
     },
     async getHh(){
       let res = await this.$http.get(this.versionLive2+'Recharge/getVirtualCurrencyList');
@@ -727,7 +736,9 @@ export default {
         type: this.txType,
         is_all: this.isAllType,
       };
-     
+      if(this.restrictData.length>0){
+        return
+      }
       let d=this.globalPpproach.checkIsEncrypt(withdrawOBJ)
       this.$http
         .post('/api/v2/withdraws/depositBalance/',d)
